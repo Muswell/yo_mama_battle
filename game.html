@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Yo Mama Battle - PubNub Awesomness</title>
+		<meta name="author" content="Shane Scanlon">
+	</head>
+	<body>
+		<h1>Yo Mama Battle Game</h1>
+		<input id="username" placeholder="What's your name?" />
+		<div id="game">
+			<div id="active-battle"></div>
+			<div id="spectators"></div>
+			<div id="history"></div>
+		</div>
+		<!-- templates -->
+		<script id="battle-tpl" type="text/template">
+			<h2>Active Battle</h2>
+			
+		</script>
+		
+		<script id="spectators-tpl" type="text/template">
+			<h2>Watching (<%= players.length %>)</h2>
+			<% for (var i = 0, j = players.length; i < j; i += 1) { %>
+				<div>
+					<h3><%= players[i].name %></h3>
+					<p>Vote: <%= players[i].vote %></p>
+				</div>
+			<% } %>
+		</script>
+		
+		<script id="history-tpl" type="text/template">
+			<h2>Past battles</h2>
+			
+		</script>
+		<!-- scripts -->
+		<script src="http://cdn.pubnub.com/pubnub-3.5.3.min.js" ></script>
+		
+		<!-- backbone requirements -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="app/libs/underscore-min.js"></script>
+		<script src="app/libs/backbone-min.js"></script>
+
+		
+		<!-- app core files -->
+		<script src="app/channels.js"></script>
+		<script src="app/main.js"></script>
+	</body>
+</html>

@@ -1,6 +1,6 @@
 // game.js creates the model and collection functions to contain the game data
 // set up YM as the global var if it doesn't already exist
-YM = YM || {};
+var YM = YM || {};
 
 // YM.Game creates a game model with Backbone
 YM.Game = Backbone.Model.extend({});

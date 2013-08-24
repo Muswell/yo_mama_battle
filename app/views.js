@@ -1,6 +1,6 @@
 // view.js creates the view functions to display the data
 // set up YM as the global var if it doesn't already exist
-YM = YM || {};
+var YM = YM || {};
 
 // YM.views contains methods that will create backbone views for a model
 YM.views = (function () {
