@@ -1,0 +1,248 @@
+/* ============================================================
+    Sections
+============================================================ */
+body {
+    font-size: $font_size;
+    line-height: 1.5;
+    font-family: $body_font; /* 16px */
+   -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+    background:$body_color;
+    color: $txt_color;
+    margin:0 auto;
+    padding: ems(20px) per(20px, 960px); /* Temporary */
+}
+
+nav ul {
+    list-style:none;
+}
+
+h1 {
+    @include setFontSize(24px); /* 24px */
+    line-height: fract(28px); /* 28px */
+    //margin:ems(20px) 0 0; /* 20px 0 0 */
+    margin: 0;
+    @include resetFontSize;
+}
+h2 {
+    @include setFontSize(20px); /* 20px */
+    line-height: fract(24px); /* 24px */
+    margin:ems(20px) 0 0; /* 20px 0 0 */
+    @include resetFontSize;
+}
+h3 {
+    @include setFontSize(18px); /* 18px */
+    line-height: fract(20px); /* 20px */
+    margin: ems(20px) 0 0; /* 20px 0 0 */
+    @include resetFontSize;
+}
+h4, h5, h6 {
+    font-size: 1em;  /* 16px */
+    line-height: 1; /* 16px */
+    margin:ems(10px) 0 0; /* 10px 0 0 */
+}
+
+
+/* ============================================================
+    Grouping content
+============================================================ */
+p, pre, ol, ul, dl, figure, figcaption, table, fieldset {
+    margin:ems(10px) 0; /* 10px 0 */
+}
+
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #000;
+    margin:ems(10px) 0; /* 10px 0 */
+    padding:0;
+}
+
+blockquote, q {
+    quotes:none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+ul ul,
+ul ol {
+    margin-top:0;
+}
+li, dd {
+    margin-left: 1em;
+}
+
+dt {
+    font-weight:bold;
+}
+
+figcaption, caption {
+    @include setFontSize(14px); /* 14px */
+    line-height:fract(16px); /* 16px */
+    text-align:left;
+    caption-side:bottom;
+    margin:ems(10px) 0; /* 10px 0 */
+    @include resetFontSize;
+}
+
+
+/* ============================================================
+    Text-level semantics
+============================================================ */
+a {
+    color: $link_color;
+    text-decoration:none;
+}
+a:hover,
+a:focus,
+a:active {
+    color: $link_color_2;
+    text-decoration: undeline;
+}
+
+:lang(en-gb)>q {
+    quotes:"\201C" "\201D" "\2018" "\2019";
+    }
+    q::before { content:open-quote; }
+    q::after { content:close-quote;
+    }
+
+small {
+    @include setFontSize(14px); /* 14px */
+    line-height:fract(16px); /* 16px */
+}
+
+abbr {
+    letter-spacing:1px;
+    }
+    abbr[title]:hover {
+        border-bottom:1px dotted rgba(0,0,0,0.2);
+        cursor:help;
+    }
+time {
+    @include setFontSize(12px);
+    font-family: $tech_font;
+    line-height: fract(16px); /* 16px */
+    text-transform:uppercase;
+    @include resetFontSize;
+}
+code, samp {
+    font:ems(14px)/fract(16px, 14px) $tech_font; /* 14px/16px */
+}
+code {
+
+}
+kbd {
+    @include setFontSize(14px);
+    font:ems(14px)/fract(16px) $tech_font; /* 14px/16px  */
+    background-color:#dcd6c6;
+    margin:0 ems(4px); /* 0 4px */
+    border:1px solid #ccc6b6;
+    border-radius:4px;
+    padding: ems(2px) ems(6px); /* 2px 6px */
+    @include resetFontSize;
+}
+sub {
+    font-size: smaller;
+    line-height:90%;
+    vertical-align:sub;
+}
+sup {
+    font-size:smaller;
+    line-height:90%;
+    vertical-align:super;
+}
+
+/* ============================================================
+    Edits
+============================================================ */
+mark, ins {
+    background-color:#ffc;
+    text-decoration:none;
+}
+del {
+    text-decoration: line-through;
+}
+
+
+/* ============================================================
+    Tabular data
+============================================================ */
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+td, th {
+    text-align:left;
+    border-bottom:1px solid #bcb3a6;
+    padding:ems(4px) ems(16px) ems(3px) 0; /* 4px 16px 3px 0 */
+}
+th {
+    color:#222;
+    border-bottom-color:#bcb3a6;
+    padding:ems(8px) 0 ems(7px); /* 8px 0 7px */
+}
+td {
+    vertical-align:top;
+}
+
+
+/* ============================================================
+    Forms
+============================================================ */
+.field {
+    font:1em/1.5 sans-serif;
+    border:1px solid #CCC;
+    padding:ems(4px);
+    width:50%;
+}
+label {
+    font-weight:bold;
+    line-height:1.5;
+    margin:ems(4px) 0;
+    display:block;
+    float:left;
+    width:20%;
+}
+label.check {
+    font-weight:normal;
+    margin-left:20%;
+    float:none;
+}
+fieldset div {
+    margin:ems(12px) 0;
+}
+fieldset abbr[title="Required"] {
+    color:#900;
+    font:normal ems(20px)/0.1 ; /* 20px */
+    border-bottom:0 none;
+}
+fieldset em {
+    @include setFontSize(14px);
+    color:#666;
+    font-family:sans-serif;
+    font-style:normal;
+    line-height:fract(16px); /* 16px */
+    margin:ems(4px) 0 ems(4px) 20%;
+    display:block;
+    @include resetFontSize;
+}
+fieldset.options {
+    clear:left;
+}
+fieldset.options ul {
+    list-style:none;
+    margin:ems(4px) 0 ems(4px) 20%;
+}
+fieldset.options li {
+    margin-left:0;
+}
+fieldset.options ul label {
+    float:none;
+    width:auto;
+    font-weight:normal;
+}

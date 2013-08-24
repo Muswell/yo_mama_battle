@@ -1,0 +1,51 @@
+/*----- 3RD Party Libraries -----*/
+@import '../libs/bourbon/bourbon'; /* import bourbon */
+/*----- Color Heirarchy -----*/
+$color_1: #000; /* color_1: #000 */
+$color_2: #FFF; /* color_2: #FFF */
+$color_3: #333; /* color_3: #333 */
+$color_4: #CCC; /* color_4: #CCC */
+$color_5: #666; /* color_5: #666 */
+$color_6: #EEE; /* color_6: #EEE */
+
+/*----- Colors - General -----*/
+$body_color: #FFF; /* body_color: #FFF */
+$txt_color: #000; /* txt_color: #000 */
+$link_color: #03C; /* link_color: #03C */
+$link_color_2: #009; /* link_color_2: #09 */
+
+/*----- Fonts -----*/
+$body_font: Helvetica, Arial, sans-serif; /* body_font: Helvetica, Arial, Sans-Serif */
+$label_font: Georgia, serif; /* label_font: Georgia, serif */
+$tech_font: Monaco, Courier, "Courier New", monospace; /* tech_font: Monaco, Courier, "Courier New", monospace */
+
+/*----- Spacing & Sizing -----*/
+$DEFAULT_SIZE: 16px;
+
+$font_size: 100%; /* font_size: 100% */
+$font_pixel_base: ($DEFAULT_SIZE *($font_size / 100%));  /* font_pixel_base: 16px -- Must declare in conjunction with font-size to work properly*/
+
+// Function that returns the number of ems equivilent to a number of pixels
+@function fract($numerator, $denominator:$font_pixel_base) {
+	@return ($numerator / $denominator);
+}
+
+// Function that returns the number of ems equivilent to a number of pixels
+@function per($numerator, $denominator) {
+	$fraction: fract($numerator, $denominator);
+	@return $fraction * 100%;
+}
+
+@function ems($numerator, $denominator:$font_pixel_base) {
+	$fraction: fract($numerator, $denominator);
+	@return $fraction + em;
+}
+
+@mixin setFontSize($px) {
+    font-size: ems($px);
+    $font_pixel_base: $px;
+}
+
+@mixin resetFontSize {
+    $font_pixel_base: ($DEFAULT_SIZE *($font_size / 100%));
+}

@@ -1,0 +1,88 @@
+/*----- Layout Globals-----*/
+  $total-width: 100%;  
+    /*----- Page -----*/
+    .page {
+        width: 960px;
+        margin: 0 auto;
+        background-color: #EEE;
+    }
+    
+    /*----- Header -----*/
+    header.banner {
+        @include column(12);
+        margin-bottom: ems($gutter-width);
+        padding: ems($gutter-width / 2) 0;
+        background: #DDD;
+        hgroup {
+            float: left;
+        }
+    }
+        
+    .site-name {
+        @include inline-block;
+        margin: 0 ems(5px) 0 0;
+        vertical-align: middle;
+    }
+    
+    .tagline {
+        @include inline-block;
+        margin: 0 ems(5px) 0 0;
+    }
+    /*----- Navigation -----*/
+    .main-nav {
+        float: right;
+        ul {            
+            margin: 0;
+            li {
+                @include inline-block;
+                margin: 0 ems(5px) 0 0;
+            }
+        }
+            
+    }
+    /*----- Content -----*/
+    // Feature panel
+    #feature {
+    	@include column(12);
+
+    	background: #DDD;
+
+    	padding-bottom: ems(20px);
+    	margin-bottom: ems($gutter-width);
+    	.test {
+    	    @include row(12);
+    	    margin-top: ems($gutter-width / 2);
+	    }
+    	p, figure, ul {
+    	    @include column(4);
+	    }
+	    ul ul {
+	        width: 100%;
+	        display: block;
+	    }
+	    ul li {
+	       display: block;
+	        padding: ems(5px);
+	        margin:0 0 ems($gutter-width / 2) 0;
+	        border-radius: 10px;
+	        background-color: #CCC;
+	    }	    
+    }
+
+    .panel {
+    //	@include column(4, 12);
+    	@include column(4);
+
+    	background: #DDD;
+    }
+    
+    /*----- Footer -----*/
+    footer.page-footer {
+        margin-top: ems($gutter-width);
+        section {
+         @include column(6);
+         background: #DDD;
+        }
+    }
+/*----- 320px Layout-----*/
+
