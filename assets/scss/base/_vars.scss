@@ -27,18 +27,18 @@ $font_pixel_base: ($DEFAULT_SIZE *($font_size / 100%));  /* font_pixel_base: 16p
 
 // Function that returns the number of ems equivilent to a number of pixels
 @function fract($numerator, $denominator:$font_pixel_base) {
-	@return ($numerator / $denominator);
+    @return ($numerator / $denominator);
 }
 
 // Function that returns the number of ems equivilent to a number of pixels
 @function per($numerator, $denominator) {
-	$fraction: fract($numerator, $denominator);
-	@return $fraction * 100%;
+    $fraction: fract($numerator, $denominator);
+    @return $fraction * 100%;
 }
 
 @function ems($numerator, $denominator:$font_pixel_base) {
-	$fraction: fract($numerator, $denominator);
-	@return $fraction + em;
+    $fraction: fract($numerator, $denominator);
+    @return $fraction + em;
 }
 
 @mixin setFontSize($px) {

@@ -43,37 +43,37 @@
     /*----- Content -----*/
     // Feature panel
     #feature {
-    	@include column(12);
+        @include column(12);
 
-    	background: #DDD;
+        background: #DDD;
 
-    	padding-bottom: ems(20px);
-    	margin-bottom: ems($gutter-width);
-    	.test {
-    	    @include row(12);
-    	    margin-top: ems($gutter-width / 2);
-	    }
-    	p, figure, ul {
-    	    @include column(4);
-	    }
-	    ul ul {
-	        width: 100%;
-	        display: block;
-	    }
-	    ul li {
-	       display: block;
-	        padding: ems(5px);
-	        margin:0 0 ems($gutter-width / 2) 0;
-	        border-radius: 10px;
-	        background-color: #CCC;
-	    }	    
+        padding-bottom: ems(20px);
+        margin-bottom: ems($gutter-width);
+        .test {
+            @include row(12);
+            margin-top: ems($gutter-width / 2);
+        }
+        p, figure, ul {
+            @include column(4);
+        }
+        ul ul {
+            width: 100%;
+            display: block;
+        }
+        ul li {
+           display: block;
+            padding: ems(5px);
+            margin:0 0 ems($gutter-width / 2) 0;
+            border-radius: 10px;
+            background-color: #CCC;
+        }        
     }
 
     .panel {
-    //	@include column(4, 12);
-    	@include column(4);
+    //    @include column(4, 12);
+        @include column(4);
 
-    	background: #DDD;
+        background: #DDD;
     }
     
     /*----- Footer -----*/

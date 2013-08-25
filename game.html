@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<title>Yo Mama Battle - PubNub Awesomness</title>
-		<meta name="author" content="Shane Scanlon">
-	</head>
-	<body>
-		<h1>Yo Mama Battle Game</h1>
-		<input id="username" placeholder="What's your name?" />
-		<div id="game">
-			<div id="active-battle"></div>
-			<div id="players"></div>
-			<div id="history"></div>
-		</div>
-		<!-- templates -->
-		<script id="battle-tpl" type="text/template">
-			<h2>Active Battle</h2>
-			
-		</script>
-		
-		<script id="players-tpl" type="text/template">
-			<h2>Watching (<%= players %>)</h2>
-			<div id="players-list"></div>
-		</script>
-		
-		<script id="player-tpl" type="text/template">
-			<p><%= name %></p>
-		</script>
-		
-		<script id="history-tpl" type="text/template">
-			<h2>Past battles</h2>
-			
-		</script>
-		<!-- scripts -->
-		<script src="http://cdn.pubnub.com/pubnub-3.5.3.min.js" ></script>
-		
-		<!-- backbone requirements -->
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-		<script src="app/libs/underscore-min.js"></script>
-		<script src="app/libs/backbone-min.js"></script>
+    <head>
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <title>Yo Mama Battle - PubNub Awesomness</title>
+        <meta name="author" content="Shane Scanlon">
+    </head>
+    <body>
+        <h1>Yo Mama Battle Game</h1>
+        <input id="username" placeholder="What's your name?" />
+        <div id="game">
+            <div id="active-battle"></div>
+            <div id="players"></div>
+            <div id="history"></div>
+        </div>
+        <!-- templates -->
+        <script id="battle-tpl" type="text/template">
+            <h2>Active Battle</h2>
+            
+        </script>
+        
+        <script id="players-tpl" type="text/template">
+            <h2>Watching (<%= players %>)</h2>
+            <div id="players-list"></div>
+        </script>
+        
+        <script id="player-tpl" type="text/template">
+            <p><%= name %></p>
+        </script>
+        
+        <script id="history-tpl" type="text/template">
+            <h2>Past battles</h2>
+            
+        </script>
+        <!-- scripts -->
+        <script src="http://cdn.pubnub.com/pubnub-3.5.3.min.js" ></script>
+        
+        <!-- backbone requirements -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="app/libs/underscore-min.js"></script>
+        <script src="app/libs/backbone-min.js"></script>
 
-		
-		<!-- app core files -->
-		<script src="app/channels.js"></script>
-		<script src="app/game.js"></script>
-		<script src="app/views.js" type="text/javascript" charset="utf-8"></script>
-		<script src="app/main.js"></script>
-	</body>
+        
+        <!-- app core files -->
+        <script src="app/channels.js"></script>
+        <script src="app/game.js"></script>
+        <script src="app/views.js" type="text/javascript" charset="utf-8"></script>
+        <script src="app/main.js"></script>
+    </body>
 </html>
