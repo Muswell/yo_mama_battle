@@ -206,7 +206,7 @@ YM.channels = (function () {
 	}()),
 
 	// The battle channel is used to link uuids with Battle models.
-	batle = (function () {
+	battle = (function () {
 		var channel = "yo-mama-battle-1",
 			active,
 			history = [];
@@ -285,6 +285,7 @@ YM.channels = (function () {
 		subscribe: function () {
 			main.subscribe();
 			users.subscribe();
+			battle.subscribe();
 		}
 	};
 }());
