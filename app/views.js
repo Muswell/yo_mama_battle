@@ -25,13 +25,45 @@ YM.views = (function () {
 		}),
 		
 		// backbone view created with a call to YM.views.judges
-		Judges = Backbone.View.extend({
+		Players = Backbone.View.extend({
+			tagName: "div",
+			className: "players",
+			template: _.template(PUBNUB.$('players-tpl').innerHTML),
+			
+			initialize: function () {
+				_.bindAll(this, 'render', 'addPlayer');
+				this.collection.on('add remove', this.render);
+			},
 
+			render: function () {
+				this.$el.html(this.template({players: this.collection.length}));
+				this.collection.each(this.addPlayer);
+				return this;
+			},
+			
+			addPlayer: function (model) {
+				var player = YM.views.player(model);
+				this.$el.find("#players-list").append(player.render().el);
+			}
+			
 		}),
 		
 		// backbone view created with a call to YM.views.judge
-		Judge = Backbone.View.extend({
+		Player = Backbone.View.extend({
+			tagName: "div",
+			className: "player",
+			template: _.template(PUBNUB.$('player-tpl').innerHTML),
+			
+			initialize: function () {
+				_.bindAll(this, 'render');
+				this.model.on('change', this.render);
+			},
 
+			render: function () {
+				this.$el.html(this.template(this.model.toJSON()));
+				console.log("attemp player render", this.$el.html());
+				return this;
+			}
 		});
 	
 	
@@ -57,13 +89,13 @@ YM.views = (function () {
 		},
 		
 		// Creates a view for the judges (channel subscribers not part of the current battle)
-		judges: function (collection) {
-			return new Judges({collection: collection});
+		players: function (collection) {
+			return new Players({collection: collection});
 		},
 		
 		// Creates a view for the an individual judge
-		judge: function (collection) {
-			return new Judge({model: model});
+		player: function (model) {
+			return new Player({model: model});
 		},
 	}
 }());

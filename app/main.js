@@ -4,12 +4,12 @@ var YM = YM || {};
 
 (function () {
 	var p = PUBNUB,
-		channel = 'yo_mama',
+		app = 'yo_mama',
 
 		// Grab user data from local storage if it exists
 		userString = '{"uuid": "' + p.uuid() + '", "activated": false}',
-		user = JSON.parse(p.db.get(channel + '-user') || userString),
-		users = [],
+		//user = JSON.parse(p.db.get(app + '-user') || userString),
+		user = JSON.parse(userString),
 		
 		// ...and initalize with the uuid set so we can keep a persistant user
 		p = PUBNUB.init({
@@ -18,41 +18,55 @@ var YM = YM || {};
 			uuid: user.uuid
 		}),
 		
-		// Hey PubNub team, the following I'm coding with a slight feeling of ignorance.
-		// I have a feeling this isn't the optimum way to accomplish what I want.
-		// If you can shed some light on it, I'd appreciate it.
-		// I've opted to use multiple channels to chunk out the data I need to publish and to avoid
-		// using a large history where it's unnecessary.
-		// Is there a way to store shared variables through the api?
-		mainChannel = 'yo-mama',
-		userChannel = 'yo-mama-users',
+		game = new YM.Game(),
+		playersView = new YM.views.players(game.get("players"));
+		
 		
 		// DOM vars
-		login = p.$('username');
+		login = p.$('username'),
+		battleContainer = p.$('active-battle'),
+		playersContainer = p.$('players'),
+		historyContainer = p.$('history');
+
+	YM.p = p;
+	YM.user = user;
+
+	playersContainer.appendChild(playersView.render().el);
 
 	// Save the user info locally
-	p.db.set(channel + '-user', JSON.stringify(user));
+	//p.db.set(app + '-user', JSON.stringify(user));
+	//p.db.set(app + '-user', undefined);
 	
 	// I didn't feel a single input login deserved a full blown view
 	if (user.activated) {
+		YM.channels.subscribe();
+		bindChannelEvents();
 		hideLogin();
-		YM.channels.main.subscribe();
 	} else {
 		// Bind username input
 		p.bind( 'keyup', login, function (e) {
 			var name = login.value;
 			if ((e.keyCode || e.charCode) === 13 && name !== '') {
-				YM.channels.main.subscribe();
-				/*YM.channels.user.checkName({
+				YM.channels.subscribe();
+				
+
+				YM.channels.users.create({
 					name: name,
 					success: function () {
-						console.log("success");
+						user.name = name;
+						user.activated = true;
+						//p.db.set(app + '-user', JSON.stringify(user));
+						bindChannelEvents();
+						hideLogin();
+						YM.channels.users.publish(user);
 					},
 
 					error: function () {
-						console.log("error");
+						alert(name + " is already taken.");
+						login.value = "";
 					}
-				});*/
+				});
+
 			}
 		});
 	}
@@ -61,7 +75,19 @@ var YM = YM || {};
 	function hideLogin() {
 		login.style.display = "none";
 	}
-
-	YM.p = p;
-	YM.user = user;
+	
+	function bindChannelEvents() {
+		p.events.bind('player-join', YM.channels.users.playerParse);
+	//	p.events.bind('player-parsed', game.get("players").add);
+	    p.events.bind('player-parsed', function (player) { 
+			game.get("players").add(player); 
+		});
+		
+		p.events.bind('player-leave', function (player) { 
+			var players = game.get("players"),
+				model = players.where({uuid: player});
+			console.log("player leavinnnne", model);
+			game.get("players").remove(model); 
+		});
+	}
 }());

@@ -44,6 +44,7 @@ YM.channels = (function () {
 		}
 		
 		function connect() {
+			subscribed = true
 			YM.p.here_now({
 	            channel: channel,
 	            callback: presence
@@ -56,9 +57,13 @@ YM.channels = (function () {
 
 		function presence (details) {
 			if (details.hasOwnProperty("uuids")) {
-				// Attention! Attention! Here and now!
+				console.log("Attention! Attention! Here and now!");
 				uuids = details.uuids;
-
+				YM.p.events.fire("here-and-now", uuids);
+				
+				YM.p.each(details.uuids, function(uuid) {
+		            YM.p.events.fire( 'player-join', uuid);
+		        } );
 				if ((serverUuid === undefined && uuids.length === 0) || !(_.any(uuids, function (uuid) { return uuid === serverUuid ;}))) {
 					tagServer();
 				}
@@ -70,7 +75,6 @@ YM.channels = (function () {
 			}
 
 			if (details.action === "leave") {
-				console.log("leaveing", arguments);
 				leave(details.uuid);
 			}
 			
@@ -78,12 +82,14 @@ YM.channels = (function () {
 		}
 		
 		function join (uuid) {
+			YM.p.events.fire("player-join", uuid);
 			if (!_.any(uuids, function (id) { return uuid === id; })) {
-				uuids.push(uuid)
+				uuids.push(uuid);
 			}
 		}
 		
 		function leave(uuid) {
+			YM.p.events.fire("player-leave", uuid);
 			uuids.splice(_.indexOf(uuids, uuid), 1);
 			// tag a new server user if the previous one left
 			// unfortunately this is published by all clients. Can't think of a work around for that
@@ -97,6 +103,10 @@ YM.channels = (function () {
 			subscribe: subscribe,
 			server: function () {
 				return serverUuid;
+			},
+
+			uuids: function () {
+				return uuids;
 			}
 		};
 	}()),
@@ -105,25 +115,98 @@ YM.channels = (function () {
 	users = (function () {
 		var channel = "yo-mama-users",
 			subscribed = false,
-			players = [];
+			players = [],
+			history = [];
 		
 		function subscribe () {
 			YM.p.subscribe({
 				channel  : channel,
-				connect  : connect,
 				callback : callback
 			});
 		}
 		
-		function checkName(args) {
-			if (!subscribed) {
-				subscribe();
+		function publish (user) {
+			YM.p.publish({
+				channel : channel,
+	            message : {
+	                uuid: user.uuid,
+	                name: user.name
+	            }
+			});
+		}
+		
+		function callback (message) {
+			players.push(message);
+			console.log("player-added", message);
+			YM.p.events.fire( 'player-added', message);
+		}
+		
+		function loadPlayers(callback) {
+			// 20 should be more than enough
+			YM.p.history({
+				count    : 20,
+		        channel  : channel,
+				callback: function (message) {
+					var active = YM.channels.main.uuids(),
+						users = message[0],
+						user,
+						i,
+						j;
+
+					function isActive(uuid) {
+						return _.any(active, function (id) {
+							return uuid === id;
+						});
+					}
+					
+					for (i = 0, j = users.length; i < j; i += 1) {
+						user = users[i];
+						if (isActive(user.uuid)) {
+							players.push(user);
+						}
+					}
+
+					history = users;
+					YM.p.events.fire('history-updated', history);
+					callback();
+				}
+			});
+		}
+		
+		function playerParse(uuid) {
+			loadPlayers(function () {
+				var model = _.find(players, function (obj) {
+					return obj.uuid === uuid;
+				}) || { uuid: uuid, name: "unkown"};
+				console.log("player-parsed", model);
+				YM.p.events.fire('player-parsed', model);
+			});
+		}
+		
+		function create(args) {
+			
+			function inUse(name) {
+				return _.any(history, function (player) { return player.name === name; })
 			}
+			loadPlayers(function () {
+				if (inUse(args.name)) {
+					args.error();
+					return
+				}
+				args.success();
+			});
 		}
 		
 		return {
 			// check wether a chosen name is in use
-			checkName: checkName
+			create: create,
+			subscribe: subscribe,
+			publish: publish,
+			loadPlayers: loadPlayers,
+			players: function () {
+				return players;
+			},
+			playerParse: playerParse
 		};
 	}());
 	
@@ -133,6 +216,11 @@ YM.channels = (function () {
 		main: main,
 		
 		// The users channel is used to link uuids with names and to validate new user names.
-		users: users
+		users: users,
+		
+		subscribe: function () {
+			main.subscribe();
+			users.subscribe();
+		}
 	};
 }());

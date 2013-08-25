@@ -10,7 +10,7 @@
 		<input id="username" placeholder="What's your name?" />
 		<div id="game">
 			<div id="active-battle"></div>
-			<div id="spectators"></div>
+			<div id="players"></div>
 			<div id="history"></div>
 		</div>
 		<!-- templates -->
@@ -19,14 +19,13 @@
 			
 		</script>
 		
-		<script id="spectators-tpl" type="text/template">
-			<h2>Watching (<%= players.length %>)</h2>
-			<% for (var i = 0, j = players.length; i < j; i += 1) { %>
-				<div>
-					<h3><%= players[i].name %></h3>
-					<p>Vote: <%= players[i].vote %></p>
-				</div>
-			<% } %>
+		<script id="players-tpl" type="text/template">
+			<h2>Watching (<%= players %>)</h2>
+			<div id="players-list"></div>
+		</script>
+		
+		<script id="player-tpl" type="text/template">
+			<p><%= name %></p>
 		</script>
 		
 		<script id="history-tpl" type="text/template">
@@ -44,6 +43,8 @@
 		
 		<!-- app core files -->
 		<script src="app/channels.js"></script>
+		<script src="app/game.js"></script>
+		<script src="app/views.js" type="text/javascript" charset="utf-8"></script>
 		<script src="app/main.js"></script>
 	</body>
 </html>

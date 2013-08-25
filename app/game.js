@@ -3,22 +3,48 @@
 var YM = YM || {};
 
 // YM.Game creates a game model with Backbone
-YM.Game = Backbone.Model.extend({});
+YM.Game = Backbone.Model.extend({
+	idAttribute: "uuid",
+	
+	initialize: function () {
+		var data = {
+			players: new YM.Players()
+		};
+		this.set(data);
+	}
+});
 
 // YM.Player creates a player model with Backbone
-YM.Player = Backbone.Model.extend({});
+YM.Player = Backbone.Model.extend({
+	idAttribute: "uuid",
+	initialize: function () {
+		console.log("new player", this);
+		
+	}
+});
 
 // YM.Players creates a collection of YM.Player models with Backbone
-YM.Players = Backbone.Collection.extend({});
+YM.Players = Backbone.Collection.extend({
+	model: YM.Player,
+	
+	initialize: function () {
+		this.on("add", function (model) { console.log("attempt add", model); });
+		this.on("remove", function (model) { console.log("attempt remove", model); });
+	}
+});
 
 // YM.Player creates a player model with Backbone
 YM.Battle = Backbone.Model.extend({});
 
 // YM.Players creates a collection of YM.Battle models with Backbone
-YM.Battles = Backbone.Collection.extend({});
+YM.Battles = Backbone.Collection.extend({
+	model: YM.Battle
+});
 
 // YM.Player creates a battle round model with Backbone
 YM.Round = Backbone.Model.extend({});
 
 // YM.Players creates a collection of YM.Battle Round models with Backbone
-YM.Round = Backbone.Collection.extend({});
+YM.Round = Backbone.Collection.extend({
+	model: YM.Round
+});
