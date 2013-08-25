@@ -18,7 +18,6 @@ YM.Game = Backbone.Model.extend({
 YM.Player = Backbone.Model.extend({
 	idAttribute: "uuid",
 	initialize: function () {
-		console.log("new player", this);
 		
 	}
 });
@@ -28,8 +27,7 @@ YM.Players = Backbone.Collection.extend({
 	model: YM.Player,
 	
 	initialize: function () {
-		this.on("add", function (model) { console.log("attempt add", model); });
-		this.on("remove", function (model) { console.log("attempt remove", model); });
+
 	}
 });
 

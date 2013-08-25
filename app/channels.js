@@ -57,7 +57,6 @@ YM.channels = (function () {
 
 		function presence (details) {
 			if (details.hasOwnProperty("uuids")) {
-				console.log("Attention! Attention! Here and now!");
 				uuids = details.uuids;
 				YM.p.events.fire("here-and-now", uuids);
 				
@@ -77,8 +76,6 @@ YM.channels = (function () {
 			if (details.action === "leave") {
 				leave(details.uuid);
 			}
-			
-			console.log("presence", details);
 		}
 		
 		function join (uuid) {
@@ -137,7 +134,6 @@ YM.channels = (function () {
 		
 		function callback (message) {
 			players.push(message);
-			console.log("player-added", message);
 			YM.p.events.fire( 'player-added', message);
 		}
 		
@@ -178,7 +174,6 @@ YM.channels = (function () {
 				var model = _.find(players, function (obj) {
 					return obj.uuid === uuid;
 				}) || { uuid: uuid, name: "unkown"};
-				console.log("player-parsed", model);
 				YM.p.events.fire('player-parsed', model);
 			});
 		}
@@ -208,6 +203,72 @@ YM.channels = (function () {
 			},
 			playerParse: playerParse
 		};
+	}()),
+
+	// The battle channel is used to link uuids with Battle models.
+	batle = (function () {
+		var channel = "yo-mama-battle-1",
+			active,
+			history = [];
+		
+		// Finds the most recent publish to the battle channel
+		function getCurrentBattle(callback) {
+			YM.p.history({
+		        count    : 1,
+		        channel  : channel,
+		        callback : function (message) { 
+					active = message[0].length === 1 ? message[0][0] : undefined;
+					callback();
+				}
+		    });
+		}
+		
+		// creates a new battle uuid and publishes it if this user is marked as the server user.
+		function setActive() {
+			console.log("setActive");
+		}
+		
+		// Checks if there is a currently active battle and if all participants are still here
+		function checkActive() {
+			var here;
+			if (active === undefined) {
+				return false;
+			}
+			
+			function playerHere(player) {
+				return _.any(here, function (uuid) {
+					return player === uuid;
+				});
+			}
+			
+			// make sure a challenger hasn't left
+			if (active.player1 !== '' && active.player2 !== '') {
+				here = main.uuids();
+				
+				if (!playerHere(active.player1) || !playerHere(active.player2)) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		// the subscribe function checks the history of the channel and determines if a new battle model is needed.
+		// it also does a pubnub subscribe to the battle feed.
+		function subscribe() {
+			getCurrentBattle(function () {
+				if(!checkActive()) {
+					setActive();
+					/*YM.p.subscribe({
+						channel  : channel,
+						callback : callback
+					});*/
+				}
+			});
+		}
+		return {
+			subscribe: subscribe,
+			
+		}
 	}());
 	
 	return {
@@ -218,6 +279,9 @@ YM.channels = (function () {
 		// The users channel is used to link uuids with names and to validate new user names.
 		users: users,
 		
+		// This channel is used to create new battle models
+		battle: battle,
+
 		subscribe: function () {
 			main.subscribe();
 			users.subscribe();

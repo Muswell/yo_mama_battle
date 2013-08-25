@@ -78,7 +78,6 @@ var YM = YM || {};
 	
 	function bindChannelEvents() {
 		p.events.bind('player-join', YM.channels.users.playerParse);
-	//	p.events.bind('player-parsed', game.get("players").add);
 	    p.events.bind('player-parsed', function (player) { 
 			game.get("players").add(player); 
 		});
@@ -86,7 +85,6 @@ var YM = YM || {};
 		p.events.bind('player-leave', function (player) { 
 			var players = game.get("players"),
 				model = players.where({uuid: player});
-			console.log("player leavinnnne", model);
 			game.get("players").remove(model); 
 		});
 	}
